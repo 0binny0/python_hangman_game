@@ -1,6 +1,10 @@
+from string import ascii_lowercase as accepted_letters
 from random import choice
 from classes import Guess, Player
-from words import game_words
+from words import game_words, hangmans
+from sys import exit
+from time import sleep
+import os
 
 
 class Game:
@@ -20,9 +24,25 @@ class Game:
 
     def resolve_game_status(self):
         bad_guesses = [guess for guess in self.guesses if guess.play == "miss"]
-        if bad_guesses and len(bad_guesses) == len(self.word):
+        if bad_guesses and len(bad_guesses) == 5:
+            print('\n' + hangmans[5])
+            print(f"You have no more guesses. The word was {self.word}.")
             return False
-        return True
+        bad_letters = ', '.join(
+            list(map(lambda guess: guess.letter, bad_guesses))
+        )
+        print(f"""
+            {hangmans[len(bad_guesses)]}
+
+            BAD GUESSES: [{bad_letters}]
+
+            WORD TO GUESS: {self.guessed_string}
+        """)
+        if "_" not in self.guessed_string:
+            sleep(2)
+            exit()
+        else:
+            return True
 
     def update_guessed_word(self, guess):
         self.add_guess(guess)
@@ -40,7 +60,7 @@ class Game:
         return word
 
 
-    def add_guess(guess):
+    def add_guess(self, guess):
         return self.guesses.append(guess)
 
 
@@ -50,16 +70,23 @@ def main():
         while True:
             player_can_guess = game.resolve_game_status()
             if not player_can_guess:
-                break
+                sleep(2)
+                exit()
             try:
                 player_guess = game.get_player_guess()
             except Exception as e:
                 print(e)
+                sleep(2)
+                os.system('cls' if os.name=='nt' else 'clear')
                 continue
+            os.system('cls' if os.name=='nt' else 'clear')
             if player_guess.is_hit():
                 guessed_word = game.update_guessed_word(player_guess)
-            if guessed_word == game.word:
-                print("You win!")
+                if guessed_word == game.word:
+                    print(f"You win! You guessed the word {game.word} right!")
             else:
                 misses = game.add_guess(player_guess)
-                continue
+
+if __name__ == '__main__':
+    os.system('cls' if os.name=='nt' else 'clear')
+    main()

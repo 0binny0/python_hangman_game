@@ -1,3 +1,5 @@
+
+import os
 from string import ascii_lowercase as accepted_letters
 
 class Player:
@@ -7,8 +9,10 @@ class Player:
         guess = input(
             "Guess a letter that falls within the mystery word...\n>>> "
         ).lower()
-        while guess not in accepted_letters:
-            guess = input("You didn't guess a letter. Think hard!...\n>>> ")
+        while not guess or guess not in accepted_letters:
+            guess = input(
+                "\nYou didn't guess a letter. Think hard!...\n>>> "
+            ).lower()
         return guess
 
 
