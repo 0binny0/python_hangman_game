@@ -25,7 +25,7 @@ class Game:
         return True
 
     def update_guessed_word(self, guess):
-        self.guesses.append(guess)
+        self.add_guess(guess)
         good_guesses = [
             guess for guess in self.guesses if guess.play == "hit"
         ]
@@ -40,7 +40,7 @@ class Game:
         return word
 
 
-    def add_missed_guess(guess):
+    def add_guess(guess):
         return self.guesses.append(guess)
 
 
@@ -61,5 +61,5 @@ def main():
             if guessed_word == game.word:
                 print("You win!")
             else:
-                misses = game.add_missed_guess(player_guess)
+                misses = game.add_guess(player_guess)
                 continue
