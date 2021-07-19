@@ -65,27 +65,26 @@ class Game:
 
 
 def main():
+    game = Game()
     while True:
-        game = Game()
-        while True:
-            player_can_guess = game.resolve_game_status()
-            if not player_can_guess:
-                sleep(2)
-                exit()
-            try:
-                player_guess = game.get_player_guess()
-            except Exception as e:
-                print(e)
-                sleep(2)
-                os.system('cls' if os.name=='nt' else 'clear')
-                continue
+        player_can_guess = game.resolve_game_status()
+        if not player_can_guess:
+            sleep(2)
+            exit()
+        try:
+            player_guess = game.get_player_guess()
+        except Exception as e:
+            print(e)
+            sleep(2)
             os.system('cls' if os.name=='nt' else 'clear')
-            if player_guess.is_hit():
-                guessed_word = game.update_guessed_word(player_guess)
-                if guessed_word == game.word:
-                    print(f"You win! You guessed the word {game.word} right!")
-            else:
-                misses = game.add_guess(player_guess)
+            continue
+        os.system('cls' if os.name=='nt' else 'clear')
+        if player_guess.is_hit():
+            guessed_word = game.update_guessed_word(player_guess)
+            if guessed_word == game.word:
+                print(f"You win! You guessed the word {game.word} right!")
+        else:
+            misses = game.add_guess(player_guess)
 
 if __name__ == '__main__':
     os.system('cls' if os.name=='nt' else 'clear')
